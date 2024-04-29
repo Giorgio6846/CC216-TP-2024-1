@@ -1,5 +1,6 @@
 • Objetivo del trabajo
 
+
 • Nombre de los alumnos participantes
 Mathias
 Fabio
@@ -10,3 +11,4 @@ Giorgio
 • Conclusiones
 
 • Licencia
+Este proyecto esta licenciado por completo por GNU Public License, Version 3.
