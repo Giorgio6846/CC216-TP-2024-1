@@ -12,6 +12,7 @@ getwd()
 
 #Lectura de archivo
 originalFile <- read.csv('hotel_bookings_original.csv', header = TRUE, stringsAsFactors = FALSE)
+
 #Limpieza de archivos
  
 View(originalFile)
@@ -30,6 +31,15 @@ summary(originalFile)
     #Al no encontrar ningun dato faltante en la columna is_repeated_guest se puede continuar con el cambio
     originalFile$is_repeated_guest <- as.logical(originalFile$is_repeated_guest)
     
+    #Despues de la conversion a logical
+    str(originalFile)
+    
+  #Conversion de columna de character to date
+    
+    #Columna: reservation_status_date
+    #Al no encontrar ningun dato faltante en la columna reservation_status_date se puede continuar con el cambio  
+    originalFile$reservation_status_date <- as.Date(originalFile$reservation_status_date, "%Y-%m-%d")
+  
     #Despues de la conversion a logical
     str(originalFile)
     
