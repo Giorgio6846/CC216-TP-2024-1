@@ -2,9 +2,9 @@
 
 
 • Nombre de los alumnos participantes
-Mathias
-Fabio
-Giorgio
+Mathias Hualtibamba Valerio
+Fabio Andre Osorio Ramos
+Giorgio Mancusi Barreda
 
 • Breve descripción del dataset (se puede adjuntar el archivo PDF)
 
