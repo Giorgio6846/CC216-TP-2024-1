@@ -47,15 +47,20 @@ ggplot(data = analyzedData, mapping = aes(x = hotel), stat = "identity") +
   geom_bar(aes(color = hotel, fill = hotel))
 
   #Pregunta 1a
-  typeHotelCountry <- analyzedData %>%
+  typeHotelbyCountry <- analyzedData %>%
+    group_by(country) %>%
+    summarize(
+      n = n(),
+    )
+  
+  typeHotelbyCountryHotel <- analyzedData %>%
     group_by(country, hotel) %>%
     summarize(
       n = n(),
     )
   
-  typeHotelCountry
-  sortByType <- sort_by(typeHotelCountry, )
-  
+  print(typeHotelbyCountry[order(typeHotelbyCountry$n, decreasing = TRUE),])
+  print(typeHotelbyCountryHotel[order(typeHotelbyCountryHotel$n, decreasing = TRUE),])
 
 View(typeHotelCountry)
 
