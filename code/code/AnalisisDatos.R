@@ -5,6 +5,8 @@ install.packages("ggplot2")
 #Uso de librerias
 library(dplyr)
 library(ggplot2)
+library(scales) # for percent formatting
+
 
 #Configuracion de Working Directory
 setwd('../../data')
@@ -48,12 +50,33 @@ ggplot(wait_time, aes(reservation_status_date, time)) +
 
 #Pregunta 4 ¿Cuándo es menor la demanda de reservas?
 
+
+
+
 #Pregunta 5 ¿Cuántas reservas incluyen niños y/o bebes?
 
 onlyBabiesorChildrens <- filter(analyzedData, babies > 0 | children > 0)
 onlyBabiesandChildrens <- filter(analyzedData, babies > 0 & children > 0)
 
 #Pregunta 6 ¿Es importante contar con espacios de estacionamiento?
+
+
+parkingGroup <- group_by(analyzedData, required_car_parking_spaces)
+parkingCount <- summarise(parkingGroup, 
+                          parkingUsed = n() / sum(n()) * 100)
+
+str(parkingCount)
+
+
+parkingCount$required_car_parking_spaces
+parkingCount$parkingUsed
+
+barplot(parkingCount$parkingUsed, 
+        main="Usos del parking", 
+        names = parkingCount$required_car_parking_spaces,
+        ylab = "Porcentaje (%)")
+)
+
 
 #Pregunta 7 ¿En qué meses del año se producen más cancelaciones de reservas?
 
