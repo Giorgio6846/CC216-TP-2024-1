@@ -79,7 +79,6 @@ onlyBabiesandChildrens <- filter(analyzedData, babies > 0 & children > 0)
 
 #Pregunta 6 ¿Es importante contar con espacios de estacionamiento?
 
-
 parkingGroup <- group_by(analyzedData, required_car_parking_spaces)
 parkingCount <- summarise(parkingGroup, 
                           parkingUsed = n() / nrow(analyzedData) * 100)
@@ -101,6 +100,8 @@ cancelsMonth <- analyzedData %>%
     amountOfCanceled = sum(is_canceled, na.rm = TRUE),
   )
 
+cancelsMonth
+
 colnames(cancelsMonth)
 names(cancelsMonth)[1] <- "month"
 
@@ -109,4 +110,18 @@ view(cancelsMonth)
 ggplot(data = cancelsMonth, aes(month, amountOfCanceled, hotel)) +
   geom_point(aes(color = hotel)) + 
   geom_line(aes(group = hotel))
-  
+
+#Pregunta 8 ¿Que tipo de comida los clientes han obtenido dependiendo del hotel?
+
+foodClient <- analyzedData %>%
+  group_by(hotel, meal) %>%
+  filter(meal != "Undefined" & meal != "SC") %>%
+  summarize(
+    n = n()
+  )
+
+foodClient
+
+ggplot(data = foodClient, aes(meal, n)) +
+  geom_point(aes(color = hotel)) +
+  geom_line(aes(group = hotel))
