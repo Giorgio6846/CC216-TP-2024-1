@@ -9,7 +9,7 @@ Trabajo Parcial: Industria hotelera
   - Se busca entender, mediante el dataset proporcionado, la industria hotelera; proporcionar insights y solución a alguna problemática que se presente.
 
 
-• Breve descripción del dataset (se puede adjuntar el archivo PDF)
+• Breve descripción del dataset
 
   - Se utilizo un conjunto de datos acerca de dos tipos de hoteles. Las variables describen factores como las fechas de reserva, la información de los huéspedes, los tipos de habitación y la información de cancelación.
 
