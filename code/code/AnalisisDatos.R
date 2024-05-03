@@ -231,3 +231,38 @@ gastosTipoUsuario(analyzedDataHotel1)
 gastosTipoUsuario(analyzedDataHotel2)
 #Ambos hoteles
 gastosTipoUsuario(analyzedData)
+
+#Pregunta 10 ¿Que mes los turistas gastan menos?
+gasto_promedio_por_mes <- tapply(analyzedData$adr, analyzedData$arrival_date_month, mean)
+
+gasto_promedio_por_mes <- gasto_promedio_por_mes[nombre_meses]
+
+mes_gasto_menor <- names(gasto_promedio_por_mes)[which.min(gasto_promedio_por_mes)]
+
+gasto_promedio_por_mes_hotel_1 <- tapply(analyzedData$adr[analyzedData$hotel == "Resort Hotel"], analyzedData$arrival_date_month[analyzedData$hotel == "Resort Hotel"], mean)
+gasto_promedio_por_mes_hotel_1 <- gasto_promedio_por_mes_hotel_1[nombre_meses]
+
+gasto_promedio_por_mes_hotel_2 <- tapply(analyzedData$adr[analyzedData$hotel == "City Hotel"], analyzedData$arrival_date_month[analyzedData$hotel == "City Hotel"], mean)
+gasto_promedio_por_mes_hotel_2 <- gasto_promedio_por_mes_hotel_2[nombre_meses]
+
+mes_gasto_menor_hotel_1 <- names(gasto_promedio_por_mes_hotel_1)[which.min(gasto_promedio_por_mes_hotel_1)]
+mes_gasto_menor_hotel_2 <- names(gasto_promedio_por_mes_hotel_2)[which.min(gasto_promedio_por_mes_hotel_2)]
+
+cat("El mes en el que los turistas gastan menos dinero en hoteles es:", mes_gasto_menor, "\n")
+cat("Para el Resort Hotel, el mes en el que los turistas gastan menos dinero es:", mes_gasto_menor_hotel_1, "\n")
+cat("Para el City Hotel, el mes en el que los turistas gastan menos dinero es:", mes_gasto_menor_hotel_2, "\n")
+
+barplot(gasto_promedio_por_mes, names.arg = nombre_meses, 
+        main = "Gasto promedio por mes",
+        xlab = "Mes", ylab = "ADR",
+        col = "steelblue")
+
+barplot(gasto_promedio_por_mes_hotel_1, names.arg = nombre_meses, 
+        main = "Gasto promedio por mes en el Resort Hotel",
+        xlab = "Mes", ylab = "ADR",
+        col = "steelblue")
+
+barplot(gasto_promedio_por_mes_hotel_2, names.arg = nombre_meses, 
+        main = "Gasto promedio por mes en el City Hotel",
+        xlab = "Mes", ylab = "ADR",
+        col = "steelblue")
