@@ -22,6 +22,10 @@ analyzedData$AdrFinal <- analyzedData$adr * (analyzedData$stays_in_weekend_night
 analyzedDataHotel1 <- analyzedData %>% filter(hotel == "City Hotel")
 analyzedDataHotel2 <- analyzedData %>% filter(hotel == "Resort Hotel")
 
+freq_meses <- table(factor(analyzedData$arrival_date_month, levels = nombre_meses))
+freq_meses_hotel_1 <- table(factor(analyzedData$arrival_date_month[analyzedData$hotel == "Resort Hotel"], levels = nombre_meses))
+freq_meses_hotel_2 <- table(factor(analyzedData$arrival_date_month[analyzedData$hotel == "City Hotel"], levels = nombre_meses))
+
 #Conversion de columna de character to date
   #Columna: reservation_status_date
   #Al no encontrar ningun dato faltante en la columna reservation_status_date se puede continuar con el cambio  
@@ -70,16 +74,16 @@ freq_meses_ordenada_hotel_1 <- sort(freq_meses_hotel_1, decreasing = TRUE)
 freq_meses_ordenada_hotel_2 <- sort(freq_meses_hotel_2, decreasing = TRUE)
 
 temporada_alta <- meses[frecuencias >= freq_meses_ordenada[4]]
-temporada_media <- meses[!(meses %in% c(temporada_alta, temporada_baja))]
 temporada_baja <- meses[frecuencias <= freq_meses_ordenada[9]]
+temporada_media <- meses[!(meses %in% c(temporada_alta, temporada_baja))]
 
 temporada_alta_hotel_1 <- meses[frecuencias >= freq_meses_ordenada[4]]
-temporada_media_hotel_1 <- meses[!(meses %in% c(temporada_alta, temporada_baja))]
 temporada_baja_hotel_1 <- meses[frecuencias <= freq_meses_ordenada[9]]
+temporada_media_hotel_1 <- meses[!(meses %in% c(temporada_alta, temporada_baja))]
 
 temporada_alta_hotel_2 <- meses[frecuencias >= freq_meses_ordenada[4]]
-temporada_media_hotel_2 <- meses[!(meses %in% c(temporada_alta, temporada_baja))]
 temporada_baja_hotel_2 <- meses[frecuencias <= freq_meses_ordenada[9]]
+temporada_media_hotel_2 <- meses[!(meses %in% c(temporada_alta, temporada_baja))]
 
 cat("Temporada Alta:", temporada_alta, "\n")
 cat("Temporada Media:", temporada_media, "\n")
@@ -120,14 +124,28 @@ table(analyzedData$arrival_date_month)
 nombre_meses <- c("January", "February", "March", "April", "May", "June", 
                   "July", "August", "September", "October", "November", "December")
 
-freq_meses <- table(factor(analyzedData$arrival_date_month, levels = nombre_meses))
-
 barplot(freq_meses, names.arg = nombre_meses, 
-        main = "Frecuencia de reservas por mes",
+        main = "Frecuencia de reservas por mes en total",
         xlab = "Mes", ylab = "Frecuencia",
-        col = "steelblue")
+        col = "blue")
+
+barplot(freq_meses_hotel_1, names.arg = nombre_meses, 
+        main = "Frecuencia de reservas por mes en el Resort Hotel ",
+        xlab = "Mes", ylab = "Frecuencia",
+        col = "green")
+
+barplot(freq_meses_hotel_2, names.arg = nombre_meses, 
+        main = "Frecuencia de reservas por mes en el City Hotel",
+        xlab = "Mes", ylab = "Frecuencia",
+        col = "red")
 
 mes_menor_demanda <- nombre_meses[which.min(freq_meses)]
+mes_menor_demanda_hotel_1 <- nombre_meses[which.min(freq_meses_hotel_1)]
+mes_menor_demanda_hotel_2 <- nombre_meses[which.min(freq_meses_hotel_2)]
+
+cat("Mes con menor demanda de reservas en total:", mes_menor_demanda, "\n")
+cat("Mes con menor demanda de reservas del Resort Hotel:", mes_menor_demanda_hotel_1, "\n")
+cat("Mes con menor demanda de reservas del City Hotel:", mes_menor_demanda_hotel_2, "\n")
 
 #Pregunta 5 ¿Cuántas reservas incluyen niños y/o bebes?
 onlyBabiesorChildrens <- filter(analyzedData, babies > 0 | children > 0)
