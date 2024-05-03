@@ -84,17 +84,12 @@ parkingGroup <- group_by(analyzedData, required_car_parking_spaces)
 parkingCount <- summarise(parkingGroup, 
                           parkingUsed = n() / nrow(analyzedData) * 100)
 
-str(parkingCount)
+parkingCount
 
-
-parkingCount$required_car_parking_spaces
-parkingCount$parkingUsed
-
-barplot(parkingCount$parkingUsed, 
-        main="Usos del parking", 
-        names = parkingCount$required_car_parking_spaces,
-        ylab = "Porcentaje (%)",
-        col = "steelblue")
+ggplot(parkingCount, aes(x = required_car_parking_spaces, y = parkingUsed)) +
+  geom_bar(stat = "identity", fill = "blue") +
+  labs(title = "Usos del estacionamiento", x = "Espacios de estacionamiento requeridos", y = "Porcentaje (%)") +
+  scale_y_continuous(limits = c(0, 100))
 
 
 
