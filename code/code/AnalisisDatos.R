@@ -16,8 +16,10 @@ getwd()
 
 #Lectura de archivo
 analyzedData <- read.csv('hotel_bookings_modified.csv', header = TRUE, stringsAsFactors = FALSE)
+analyzedData$AdrFinal <- analyzedData$adr * (analyzedData$stays_in_weekend_nights + analyzedData$stays_in_week_nights)
 
-analyzedDataHotel1 <- analyzedData %>% filter(hotel == "City Hotel")
+
+analyzedDataHotel1 <- analyzedData %>% filter(hotel == "City Hotel") 
 analyzedDataHotel2 <- analyzedData %>% filter(hotel == "Resort Hotel")
 
 #Conversion de columna de character to date
