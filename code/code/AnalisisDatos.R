@@ -70,7 +70,7 @@ onlyBabiesandChildrens <- filter(analyzedData, babies > 0 & children > 0)
 
 parkingGroup <- group_by(analyzedData, required_car_parking_spaces)
 parkingCount <- summarise(parkingGroup, 
-                          parkingUsed = n() / sum(n()) * 100)
+                          parkingUsed = n() / nrow(analyzedData) * 100)
 
 str(parkingCount)
 
