@@ -48,7 +48,7 @@ view(wait_time)
 colnames(wait_time)
 names(wait_time)[1] <- "year"
 
-ggplot(data = wait_time, mapping = aes(year,time)) +
+ggplot(data = wait_time, aes(year,time, group = hotel)) +
   geom_line(aes(color = hotel)) + 
   geom_point(aes(group = hotel))
   
