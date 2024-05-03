@@ -21,7 +21,6 @@ analyzedData <- read.csv('hotel_bookings_modified.csv', header = TRUE, stringsAs
 #Al no encontrar ningun dato faltante en la columna reservation_status_date se puede continuar con el cambio  
 analyzedData$reservation_status_date <- as.Date(analyzedData$reservation_status_date, "%Y-%m-%d")
 
-
 #Informacion de datos
 head(analyzedData)
 summary(analyzedData)
@@ -33,7 +32,7 @@ analyzedData %>%
   count(hotel)
 
 ggplot(data = analyzedData, mapping = aes(x = hotel), stat = "identity") +
-  geom_bar()
+  geom_bar(aes(color = hotel, fill = hotel))
 
 #Pregunta 2 ¿Está aumentando la demanda con el tiempo?
 
@@ -51,7 +50,6 @@ names(wait_time)[1] <- "year"
 ggplot(data = wait_time, aes(year,time, group = hotel)) +
   geom_line(aes(color = hotel)) + 
   geom_point(aes(group = hotel))
-  
 
 #Pregunta 3 ¿Cuándo se producen las temporadas de reservas: alta, media y baja?
 
