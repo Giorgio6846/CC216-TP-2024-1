@@ -57,7 +57,19 @@ ggplot(data = wait_time, aes(year,time, group = hotel)) +
 
 #Pregunta 4 ¿Cuándo es menor la demanda de reservas?
 
+table(analyzedData$arrival_date_month)
 
+nombre_meses <- c("January", "February", "March", "April", "May", "June", 
+                  "July", "August", "September", "October", "November", "December")
+
+freq_meses <- table(factor(analyzedData$arrival_date_month, levels = nombre_meses))
+
+barplot(freq_meses, names.arg = nombre_meses, 
+        main = "Frecuencia de reservas por mes",
+        xlab = "Mes", ylab = "Frecuencia",
+        col = "steelblue")
+
+mes_menor_demanda <- nombre_meses[which.min(freq_meses)]
 
 
 #Pregunta 5 ¿Cuántas reservas incluyen niños y/o bebes?
@@ -81,7 +93,8 @@ parkingCount$parkingUsed
 barplot(parkingCount$parkingUsed, 
         main="Usos del parking", 
         names = parkingCount$required_car_parking_spaces,
-        ylab = "Porcentaje (%)")
+        ylab = "Porcentaje (%)",
+        col = "steelblue")
 
 
 
