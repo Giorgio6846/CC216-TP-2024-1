@@ -2,6 +2,7 @@
 install.packages("dplyr")
 install.packages("ggplot2")
 install.packages("tidyverse")
+install.packages("scales")
 
 #Uso de librerias
 library(dplyr)
@@ -18,23 +19,20 @@ getwd()
 analyzedData <- read.csv('hotel_bookings_modified.csv', header = TRUE, stringsAsFactors = FALSE)
 analyzedData$AdrFinal <- analyzedData$adr * (analyzedData$stays_in_weekend_nights + analyzedData$stays_in_week_nights)
 
-
-analyzedDataHotel1 <- analyzedData %>% filter(hotel == "City Hotel") 
+analyzedDataHotel1 <- analyzedData %>% filter(hotel == "City Hotel")
 analyzedDataHotel2 <- analyzedData %>% filter(hotel == "Resort Hotel")
 
 #Conversion de columna de character to date
-
-#Columna: reservation_status_date
-#Al no encontrar ningun dato faltante en la columna reservation_status_date se puede continuar con el cambio  
-analyzedData$reservation_status_date <- as.Date(analyzedData$reservation_status_date, "%Y-%m-%d")
+  #Columna: reservation_status_date
+  #Al no encontrar ningun dato faltante en la columna reservation_status_date se puede continuar con el cambio  
+    analyzedData$reservation_status_date <- as.Date(analyzedData$reservation_status_date, "%Y-%m-%d")
 
 #Informacion de datos
-head(analyzedData)
-summary(analyzedData)
-str(analyzedData)
+  head(analyzedData)
+  summary(analyzedData)
+  str(analyzedData)
 
 #Pregunta 1 ¿Cuántas reservas se realizan por tipo de hotel? o ¿Qué tipo de hotel prefiere la gente?
-
 analyzedData %>%
   count(hotel)
 
@@ -42,7 +40,6 @@ ggplot(data = analyzedData, mapping = aes(x = hotel), stat = "identity") +
   geom_bar(aes(color = hotel, fill = hotel))
 
 #Pregunta 2 ¿Está aumentando la demanda con el tiempo?
-
 wait_time <- analyzedData %>%
   group_by(format(reservation_status_date, "%Y"), hotel) %>%
     summarize(
@@ -118,7 +115,6 @@ barplot(freq_meses_hotel_2, names.arg = nombre_meses,
 
 
 #Pregunta 4 ¿Cuándo es menor la demanda de reservas?
-
 table(analyzedData$arrival_date_month)
 
 nombre_meses <- c("January", "February", "March", "April", "May", "June", 
@@ -133,11 +129,34 @@ barplot(freq_meses, names.arg = nombre_meses,
 
 mes_menor_demanda <- nombre_meses[which.min(freq_meses)]
 
-
 #Pregunta 5 ¿Cuántas reservas incluyen niños y/o bebes?
-
 onlyBabiesorChildrens <- filter(analyzedData, babies > 0 | children > 0)
 onlyBabiesandChildrens <- filter(analyzedData, babies > 0 & children > 0)
+noBabiesandChildren <- filter(analyzedData, babies == 0 & children == 0)
+
+groupedOrBabies <- onlyBabiesorChildrens %>%
+  group_by(hotel) %>%
+  summarize(
+    n = n()
+  )
+
+groupedAndBabies <- onlyBabiesandChildrens %>%
+  group_by(hotel) %>%
+  summarize(
+    n = n()
+  )
+
+names(groupedOrBabies)[2] <- "orBabiesChildren"
+names(groupedAndBabies)[2] <- "andBabiesChildren"
+
+babiesChildrens <- merge(groupedOrBabies, groupedAndBabies, by = "hotel")
+babiesChildrens
+  
+ggplot(babiesChildrens) +
+  geom_bar(mapping = aes(x = hotel, y = orBabiesChildren), stat = "identity")
+
+ggplot(babiesChildrens) +
+  geom_bar(mapping = aes(x = hotel, y = andBabiesChildren), stat = "identity")
 
 #Pregunta 6 ¿Es importante contar con espacios de estacionamiento?
 
@@ -162,9 +181,7 @@ calcularUsoEstacionamiento(analyzedDataHotel2)
 #Ambos hoteles
 calcularUsoEstacionamiento(analyzedData)
 
-
 #Pregunta 7 ¿En qué meses del año se producen más cancelaciones de reservas?
-
 cancelsMonth <- analyzedData %>%
   group_by(format(reservation_status_date, "%m"), hotel) %>%
   summarize(
@@ -183,7 +200,6 @@ ggplot(data = cancelsMonth, aes(month, amountOfCanceled, hotel)) +
   geom_line(aes(group = hotel))
 
 #Pregunta 8 ¿Que tipo de comida los clientes han obtenido dependiendo del hotel?
-
 foodClient <- analyzedData %>%
   group_by(hotel, meal) %>%
   filter(meal != "Undefined" & meal != "SC") %>%
