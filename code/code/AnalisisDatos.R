@@ -46,6 +46,19 @@ analyzedData %>%
 ggplot(data = analyzedData, mapping = aes(x = hotel), stat = "identity") +
   geom_bar(aes(color = hotel, fill = hotel))
 
+  #Pregunta 1a
+  typeHotelCountry <- analyzedData %>%
+    group_by(country, hotel) %>%
+    summarize(
+      n = n(),
+    )
+  
+  typeHotelCountry
+  sortByType <- sort_by(typeHotelCountry, )
+  
+
+View(typeHotelCountry)
+
 #Pregunta 2 ¿Está aumentando la demanda con el tiempo?
 wait_time <- analyzedData %>%
   group_by(format(reservation_status_date, "%Y"), hotel) %>%
@@ -93,13 +106,13 @@ cat("Temporada Alta:", temporada_alta, "\n")
 cat("Temporada Media:", temporada_media, "\n")
 cat("Temporada Baja:", temporada_baja, "\n")
 
-cat("Temporada Alta:", temporada_alta_hotel_1, "\n")
-cat("Temporada Media:", temporada_media_hotel_1, "\n")
-cat("Temporada Baja:", temporada_baja_hotel_1, "\n")
+cat("Temporada Alta en el Resort Hotel:", temporada_alta_hotel_1, "\n")
+cat("Temporada Media en el Resort Hotel:", temporada_media_hotel_1, "\n")
+cat("Temporada Baja en el Resort Hotel:", temporada_baja_hotel_1, "\n")
 
-cat("Temporada Alta:", temporada_alta_hotel_2, "\n")
-cat("Temporada Media:", temporada_media_hotel_2, "\n")
-cat("Temporada Baja:", temporada_baja_hotel_2, "\n")
+cat("Temporada Alta en el City Hotel:", temporada_alta_hotel_2, "\n")
+cat("Temporada Media en el City Hotel:", temporada_media_hotel_2, "\n")
+cat("Temporada Baja en el City Hotel:", temporada_baja_hotel_2, "\n")
 
 colores <- c("Temporada Alta" = "#FF5851", "Temporada Media" = "#414A6B", "Temporada Baja" = "#F3C130")
 
