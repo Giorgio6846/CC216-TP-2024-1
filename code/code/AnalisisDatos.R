@@ -6,7 +6,7 @@ install.packages("tidyverse")
 #Uso de librerias
 library(dplyr)
 library(ggplot2)
-library(scales) # for percent formatting
+library(scales)
 library(tidyverse)
 
 
@@ -17,7 +17,7 @@ getwd()
 #Lectura de archivo
 analyzedData <- read.csv('hotel_bookings_modified.csv', header = TRUE, stringsAsFactors = FALSE)
 
-analyzedDataHotel1 <- analyzedData %>% filter(hotel == "City Hotel") 
+analyzedDataHotel1 <- analyzedData %>% filter(hotel == "City Hotel")
 analyzedDataHotel2 <- analyzedData %>% filter(hotel == "Resort Hotel")
 
 #Conversion de columna de character to date
@@ -122,10 +122,6 @@ view(cancelsMonth)
 ggplot(data = cancelsMonth, aes(month, amountOfCanceled, hotel)) +
   geom_point(aes(color = hotel)) + 
   geom_line(aes(group = hotel))
-<<<<<<< HEAD
-  
-#Pregunta 9 ¿Los usuarios repetidos tienden a consumir / gastar mas?
-=======
 
 #Pregunta 8 ¿Que tipo de comida los clientes han obtenido dependiendo del hotel?
 
@@ -141,4 +137,3 @@ foodClient
 ggplot(data = foodClient, aes(meal, n)) +
   geom_point(aes(color = hotel)) +
   geom_line(aes(group = hotel))
->>>>>>> 4f09a419eb234a7f91e59426d0e797559cf2dd1c
