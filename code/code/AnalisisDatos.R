@@ -17,6 +17,9 @@ getwd()
 #Lectura de archivo
 analyzedData <- read.csv('hotel_bookings_modified.csv', header = TRUE, stringsAsFactors = FALSE)
 
+analyzedDataHotel1 <- analyzedData %>% filter(hotel == "City Hotel") 
+analyzedDataHotel2 <- analyzedData %>% filter(hotel == "Resort Hotel")
+
 #Conversion de columna de character to date
 
 #Columna: reservation_status_date
@@ -80,17 +83,25 @@ onlyBabiesandChildrens <- filter(analyzedData, babies > 0 & children > 0)
 #Pregunta 6 ¿Es importante contar con espacios de estacionamiento?
 
 
-parkingGroup <- group_by(analyzedData, required_car_parking_spaces)
-parkingCount <- summarise(parkingGroup, 
-                          parkingUsed = n() / nrow(analyzedData) * 100)
+calcularUsoEstacionamiento <- function(dataFrame) { # create a function with the name my_function
+  parkingGroup <- group_by(dataFrame, required_car_parking_spaces)
+  parkingCount <- summarise(parkingGroup, 
+                            parkingUsed = n() / nrow(dataFrame) * 100)
+  
+  parkingCount
+  
+  ggplot(parkingCount, aes(x = required_car_parking_spaces, y = parkingUsed)) +
+    geom_bar(stat = "identity", fill = "blue") +
+    labs(title = "Usos del estacionamiento", x = "Espacios de estacionamiento requeridos", y = "Porcentaje (%)") +
+    scale_y_continuous(limits = c(0, 100))
+}
 
-parkingCount
-
-ggplot(parkingCount, aes(x = required_car_parking_spaces, y = parkingUsed)) +
-  geom_bar(stat = "identity", fill = "blue") +
-  labs(title = "Usos del estacionamiento", x = "Espacios de estacionamiento requeridos", y = "Porcentaje (%)") +
-  scale_y_continuous(limits = c(0, 100))
-
+#Primero hotel
+calcularUsoEstacionamiento(analyzedDataHotel1)
+#Segundo hotel
+calcularUsoEstacionamiento(analyzedDataHotel2)
+#Ambos hoteles
+calcularUsoEstacionamiento(analyzedData)
 
 
 #Pregunta 7 ¿En qué meses del año se producen más cancelaciones de reservas?
@@ -110,3 +121,4 @@ ggplot(data = cancelsMonth, aes(month, amountOfCanceled, hotel)) +
   geom_point(aes(color = hotel)) + 
   geom_line(aes(group = hotel))
   
+#Pregunta 9 ¿Los usuarios repetidos tienden a consumir / gastar mas?
