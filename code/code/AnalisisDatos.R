@@ -22,6 +22,9 @@ analyzedData$AdrFinal <- analyzedData$adr * (analyzedData$stays_in_weekend_night
 analyzedDataHotel1 <- analyzedData %>% filter(hotel == "City Hotel")
 analyzedDataHotel2 <- analyzedData %>% filter(hotel == "Resort Hotel")
 
+nombre_meses <- c("January", "February", "March", "April", "May", "June", 
+                  "July", "August", "September", "October", "November", "December")
+
 freq_meses <- table(factor(analyzedData$arrival_date_month, levels = nombre_meses))
 freq_meses_hotel_1 <- table(factor(analyzedData$arrival_date_month[analyzedData$hotel == "Resort Hotel"], levels = nombre_meses))
 freq_meses_hotel_2 <- table(factor(analyzedData$arrival_date_month[analyzedData$hotel == "City Hotel"], levels = nombre_meses))
@@ -63,15 +66,16 @@ ggplot(data = wait_time, aes(year,time, group = hotel)) +
 
 tabla_frecuencia <- table(analyzedData$arrival_date_month)
 
-meses <- names(freq_meses_ordenada)
 
 meses_coloreo <-names(freq_meses)
 
-frecuencias <- as.vector(freq_meses_ordenada)
 
 freq_meses_ordenada <- sort(tabla_frecuencia, decreasing = TRUE)
 freq_meses_ordenada_hotel_1 <- sort(freq_meses_hotel_1, decreasing = TRUE)
 freq_meses_ordenada_hotel_2 <- sort(freq_meses_hotel_2, decreasing = TRUE)
+
+frecuencias <- as.vector(freq_meses_ordenada)
+meses <- names(freq_meses_ordenada)
 
 temporada_alta <- meses[frecuencias >= freq_meses_ordenada[4]]
 temporada_baja <- meses[frecuencias <= freq_meses_ordenada[9]]
@@ -121,8 +125,6 @@ barplot(freq_meses_hotel_2, names.arg = nombre_meses,
 #Pregunta 4 ¿Cuándo es menor la demanda de reservas?
 table(analyzedData$arrival_date_month)
 
-nombre_meses <- c("January", "February", "March", "April", "May", "June", 
-                  "July", "August", "September", "October", "November", "December")
 
 barplot(freq_meses, names.arg = nombre_meses, 
         main = "Frecuencia de reservas por mes en total",
@@ -184,7 +186,7 @@ calcularUsoEstacionamiento <- function(dataFrame) {
   parkingCount <- summarise(parkingGroup, 
                             parkingUsed = n() / nrow(dataFrame) * 100)
   
-  parkingCount
+  print(parkingCount)
   
   ggplot(parkingCount, aes(x = required_car_parking_spaces, y = parkingUsed)) +
     geom_bar(stat = "identity", fill = "blue") +
