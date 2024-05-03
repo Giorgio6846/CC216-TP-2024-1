@@ -112,6 +112,8 @@ cancelsMonth <- analyzedData %>%
     amountOfCanceled = sum(is_canceled, na.rm = TRUE),
   )
 
+cancelsMonth
+
 colnames(cancelsMonth)
 names(cancelsMonth)[1] <- "month"
 
@@ -120,5 +122,23 @@ view(cancelsMonth)
 ggplot(data = cancelsMonth, aes(month, amountOfCanceled, hotel)) +
   geom_point(aes(color = hotel)) + 
   geom_line(aes(group = hotel))
+<<<<<<< HEAD
   
 #Pregunta 9 ¿Los usuarios repetidos tienden a consumir / gastar mas?
+=======
+
+#Pregunta 8 ¿Que tipo de comida los clientes han obtenido dependiendo del hotel?
+
+foodClient <- analyzedData %>%
+  group_by(hotel, meal) %>%
+  filter(meal != "Undefined" & meal != "SC") %>%
+  summarize(
+    n = n()
+  )
+
+foodClient
+
+ggplot(data = foodClient, aes(meal, n)) +
+  geom_point(aes(color = hotel)) +
+  geom_line(aes(group = hotel))
+>>>>>>> 4f09a419eb234a7f91e59426d0e797559cf2dd1c
