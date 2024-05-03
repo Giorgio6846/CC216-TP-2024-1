@@ -139,3 +139,5 @@ foodClient
 ggplot(data = foodClient, aes(meal, n)) +
   geom_point(aes(color = hotel)) +
   geom_line(aes(group = hotel))
+
+#Pregunta 9 ¿Los usuarios repetidos tienden a consumir / gastar mas?
