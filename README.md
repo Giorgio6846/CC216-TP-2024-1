@@ -19,4 +19,4 @@ Trabajo Parcial: Industria hotelera
 -	Es indispensable ofrecer nuevos servicios según la temporada en que se encuentre la industria.
 
 • Licencia
-  - Este proyecto esta licenciado por completo por GNU Public License, Version 3.
+  - Este proyecto esta licenciado por completo por BSD 3-Clause License, Version 3.
