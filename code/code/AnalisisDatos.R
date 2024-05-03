@@ -60,6 +60,63 @@ ggplot(data = wait_time, aes(year,time, group = hotel)) +
 
 #Pregunta 3 ¿Cuándo se producen las temporadas de reservas: alta, media y baja?
 
+tabla_frecuencia <- table(analyzedData$arrival_date_month)
+
+meses <- names(freq_meses_ordenada)
+
+meses_coloreo <-names(freq_meses)
+
+frecuencias <- as.vector(freq_meses_ordenada)
+
+freq_meses_ordenada <- sort(tabla_frecuencia, decreasing = TRUE)
+freq_meses_ordenada_hotel_1 <- sort(freq_meses_hotel_1, decreasing = TRUE)
+freq_meses_ordenada_hotel_2 <- sort(freq_meses_hotel_2, decreasing = TRUE)
+
+temporada_alta <- meses[frecuencias >= freq_meses_ordenada[4]]
+temporada_media <- meses[!(meses %in% c(temporada_alta, temporada_baja))]
+temporada_baja <- meses[frecuencias <= freq_meses_ordenada[9]]
+
+temporada_alta_hotel_1 <- meses[frecuencias >= freq_meses_ordenada[4]]
+temporada_media_hotel_1 <- meses[!(meses %in% c(temporada_alta, temporada_baja))]
+temporada_baja_hotel_1 <- meses[frecuencias <= freq_meses_ordenada[9]]
+
+temporada_alta_hotel_2 <- meses[frecuencias >= freq_meses_ordenada[4]]
+temporada_media_hotel_2 <- meses[!(meses %in% c(temporada_alta, temporada_baja))]
+temporada_baja_hotel_2 <- meses[frecuencias <= freq_meses_ordenada[9]]
+
+cat("Temporada Alta:", temporada_alta, "\n")
+cat("Temporada Media:", temporada_media, "\n")
+cat("Temporada Baja:", temporada_baja, "\n")
+
+cat("Temporada Alta:", temporada_alta_hotel_1, "\n")
+cat("Temporada Media:", temporada_media_hotel_1, "\n")
+cat("Temporada Baja:", temporada_baja_hotel_1, "\n")
+
+cat("Temporada Alta:", temporada_alta_hotel_2, "\n")
+cat("Temporada Media:", temporada_media_hotel_2, "\n")
+cat("Temporada Baja:", temporada_baja_hotel_2, "\n")
+
+colores <- c("Temporada Alta" = "#FF5851", "Temporada Media" = "#414A6B", "Temporada Baja" = "#F3C130")
+
+barplot(freq_meses, names.arg = nombre_meses,
+        main = "Frecuencia de reservas por mes ordenados por temporada",
+        xlab = "Mes", ylab = "Frecuencia",
+        col = ifelse(meses_coloreo %in% temporada_alta, colores["Temporada Alta"],
+                     ifelse(meses_coloreo %in% temporada_baja, colores["Temporada Baja"], colores["Temporada Media"])))
+
+barplot(freq_meses_hotel_1, names.arg = nombre_meses,
+        main = "Frecuencia de reservas por mes ordenados por temporada en el Resort Hotel",
+        xlab = "Mes", ylab = "Frecuencia",
+        col = ifelse(meses_coloreo %in% temporada_alta, colores["Temporada Alta"],
+                     ifelse(meses_coloreo %in% temporada_baja, colores["Temporada Baja"], colores["Temporada Media"])))
+
+barplot(freq_meses_hotel_2, names.arg = nombre_meses,
+        main = "Frecuencia de reservas por mes ordenados por temporada en el City Hotel",
+        xlab = "Mes", ylab = "Frecuencia",
+        col = ifelse(meses_coloreo %in% temporada_alta, colores["Temporada Alta"],
+                     ifelse(meses_coloreo %in% temporada_baja, colores["Temporada Baja"], colores["Temporada Media"])))
+
+
 #Pregunta 4 ¿Cuándo es menor la demanda de reservas?
 
 table(analyzedData$arrival_date_month)
@@ -85,7 +142,7 @@ onlyBabiesandChildrens <- filter(analyzedData, babies > 0 & children > 0)
 #Pregunta 6 ¿Es importante contar con espacios de estacionamiento?
 
 
-calcularUsoEstacionamiento <- function(dataFrame) { # create a function with the name my_function
+calcularUsoEstacionamiento <- function(dataFrame) {
   parkingGroup <- group_by(dataFrame, required_car_parking_spaces)
   parkingCount <- summarise(parkingGroup, 
                             parkingUsed = n() / nrow(dataFrame) * 100)
@@ -140,4 +197,21 @@ ggplot(data = foodClient, aes(meal, n)) +
   geom_point(aes(color = hotel)) +
   geom_line(aes(group = hotel))
 
-#Pregunta 9 ¿Los usuarios repetidos tienden a consumir / gastar mas?
+#Pregunta 9 ¿Los usuarios repetidos tienden a consumir / gastar mas respecto a los primerizos?
+
+gastosTipoUsuario <- function(dataFrame) {
+  tipoUsuario <- dataFrame %>% group_by(is_repeated_guest) %>% summarise(adrPromedio = mean(AdrFinal))
+                                                           
+  print(tipoUsuario)
+  
+  ggplot(tipoUsuario, aes(x = is_repeated_guest, y = adrPromedio)) +
+    geom_bar(stat = "identity", fill = "blue") +
+    labs(title = "Gastos vs Tipo Usuario", x = "Tipo de usuario", y = "Gastos ($)")
+}
+
+#Primero hotel
+gastosTipoUsuario(analyzedDataHotel1)
+#Segundo hotel
+gastosTipoUsuario(analyzedDataHotel2)
+#Ambos hoteles
+gastosTipoUsuario(analyzedData)
