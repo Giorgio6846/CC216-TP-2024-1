@@ -270,7 +270,7 @@ gastosTipoUsuario(analyzedDataHotel2)
 #Ambos hoteles
 gastosTipoUsuario(analyzedData)
 
-#Pregunta 10 ¿Que mes los turistas gastan menos?
+#Pregunta 10 ¿En que mes los turistas gastan menos?
 gasto_promedio_por_mes <- tapply(analyzedData$adr, analyzedData$arrival_date_month, mean)
 
 gasto_promedio_por_mes <- gasto_promedio_por_mes[nombre_meses]
