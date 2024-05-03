@@ -67,15 +67,17 @@ onlyBabiesandChildrens <- filter(analyzedData, babies > 0 & children > 0)
 #Pregunta 7 ¿En qué meses del año se producen más cancelaciones de reservas?
 
 cancelsMonth <- analyzedData %>%
-  group_by(format(reservation_status_date, "%m"), format(reservation_status_date, "%Y")) %>%
+  group_by(format(reservation_status_date, "%m"), hotel) %>%
   summarize(
     amountOfCanceled = sum(is_canceled, na.rm = TRUE),
   )
 
 colnames(cancelsMonth)
 names(cancelsMonth)[1] <- "month"
-names(cancelsMonth)[2] <- "year"
 
+view(cancelsMonth)
 
-ggplot(cancelsMonth) +
-  geom_bar(aes(x = month, y = amountOfCanceled), stat = "identity")
+ggplot(data = cancelsMonth, aes(month, amountOfCanceled, hotel)) +
+  geom_point(aes(color = hotel)) + 
+  geom_line(aes(group = hotel))
+  
