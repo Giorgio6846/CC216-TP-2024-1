@@ -1,10 +1,12 @@
 #Instalacion de librerias
 install.packages("dplyr")
 install.packages("ggplot2")
+install.packages("tidyverse")
 
 #Uso de librerias
 library(dplyr)
 library(ggplot2)
+library(tidyverse)
 
 #Configuracion de Working Directory
 setwd('../../data')
@@ -36,13 +38,20 @@ ggplot(data = analyzedData, mapping = aes(x = hotel), stat = "identity") +
 #Pregunta 2 ¿Está aumentando la demanda con el tiempo?
 
 wait_time <- analyzedData %>%
-  group_by(reservation_status_date) %>%
+  group_by(format(reservation_status_date, "%Y"), hotel) %>%
     summarize(
       time = mean(lead_time, na.rm = TRUE),
     )
 
-ggplot(wait_time, aes(reservation_status_date, time)) +
-        geom_line()
+view(wait_time)
+
+colnames(wait_time)
+names(wait_time)[1] <- "year"
+
+ggplot(data = wait_time, mapping = aes(year,time)) +
+  geom_line(aes(color = hotel)) + 
+  geom_point(aes(group = hotel))
+  
 
 #Pregunta 3 ¿Cuándo se producen las temporadas de reservas: alta, media y baja?
 

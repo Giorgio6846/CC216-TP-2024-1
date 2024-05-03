@@ -1,10 +1,12 @@
 #Instalacion de librerias
 install.packages("dplyr")
 install.packages("ggplot2")
+install.packages("tidyverse")
 
 #Uso de librerias
 library(dplyr)
 library(ggplot2)
+library(tidyverse)
 
 #Configuracion de Working Directory
 setwd('../../data')
