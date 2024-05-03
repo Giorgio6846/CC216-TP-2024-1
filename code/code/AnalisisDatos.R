@@ -68,7 +68,7 @@ View(typeHotelCountry)
 wait_time <- analyzedData %>%
   group_by(format(reservation_status_date, "%Y"), hotel) %>%
     summarize(
-      time = mean(lead_time, na.rm = TRUE),
+      n = n()
     )
 
 view(wait_time)
